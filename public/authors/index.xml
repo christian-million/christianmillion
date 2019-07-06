@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authors on Christian Million</title>
+    <link>/authors/</link>
+    <description>Recent content in Authors on Christian Million</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year}</copyright>
+    <lastBuildDate>Wed, 20 Apr 2016 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>admin</title>
+      <link>/authors/admin/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/admin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/authors/christian/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/christian/</guid>
+      <description>&lt;p&gt;Christian currently works at Modesto Junior College. He is an avid runner and backpacker. He enjoys improv comedy and his favorite animals are rats.&lt;/p&gt;
+
+&lt;p&gt;This website contains some of my thoughts on some of my interests.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

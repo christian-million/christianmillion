@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on Christian Million</title>
+    <link>/tags/r/</link>
+    <description>Recent content in R on Christian Million</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year}</copyright>
+    <lastBuildDate>Sat, 06 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Example of internal project</title>
+      <link>/project/myproject/</link>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/myproject/</guid>
+      <description>&lt;p&gt;Hello my baby, hellow, my darling, hello my ragtime gal.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>researchR Title Project</title>
+      <link>/project/internal-project/</link>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/internal-project/</guid>
+      <description>&lt;p&gt;The researchR package&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
