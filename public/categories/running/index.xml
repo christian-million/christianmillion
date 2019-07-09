@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>r on Christian Million</title>
-    <link>/tags/r/</link>
-    <description>Recent content in r on Christian Million</description>
+    <title>running on Christian Million</title>
+    <link>/categories/running/</link>
+    <description>Recent content in running on Christian Million</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <copyright>&amp;copy; {year}</copyright>
     <lastBuildDate>Mon, 08 Jul 2019 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="/categories/running/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -78,26 +78,6 @@ Take ALL long runs seriously.&lt;/p&gt;&lt;/li&gt;
 &lt;h1&gt;Planning for CIM 2019&lt;/h1&gt;
 &lt;p&gt;With a little more planning this year, I can take out some of the cognitive costs of training. This year my planning will include methods to tackle the areas of improvement above.&lt;/p&gt;
 &lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Example of internal project</title>
-      <link>/project/myproject/</link>
-      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/myproject/</guid>
-      <description>&lt;p&gt;Hello my baby, hellow, my darling, hello my ragtime gal.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>researchR Title Project</title>
-      <link>/project/internal-project/</link>
-      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/internal-project/</guid>
-      <description>&lt;p&gt;The researchR package&lt;/p&gt;
 </description>
     </item>
     

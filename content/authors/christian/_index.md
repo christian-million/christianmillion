@@ -26,12 +26,12 @@ social:
   link: https://github.com/christian-million
 - icon: linkedin
   icon_pack: fab
-  link: https://www.linkedin.com
+  link: https://www.linkedin.com/in/christianmillion/
 - icon: stack-overflow
   icon_pack: fab
   link: https://stackoverflow.com/users/9017311/christian-million
 ---
 
-Christian currently works at Modesto Junior College. He is an avid runner and backpacker. He enjoys improv comedy and his favorite animals are rats.
+I currently work at Modesto Junior College. I am an avid runner and backpacker. I enjoys improv comedy and my favorite animals are rats.
 
-This website contains some of my thoughts on some of my interests.
+In the future, this website will contain my thoughts on some of my interests. For now, though, I am actively working on developing the structure.

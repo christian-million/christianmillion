@@ -22,7 +22,49 @@
   </url>
   
   <url>
-    <loc>/contact/about/</loc>
+    <loc>/post/running/cim-2019-prep/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/r/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/running/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/running/</loc>
+    <lastmod>2019-07-08T18:56:06-07:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -31,35 +73,12 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2019-07-06T09:46:50-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/project/myproject/</loc>
     <lastmod>2019-07-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2019-07-06T09:46:50-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/project/</loc>
-    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/r/</loc>
-    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2019-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -110,11 +129,6 @@
   
   <url>
     <loc>/authors/christian/</loc>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <priority>0</priority>
   </url>
   
   <url>
