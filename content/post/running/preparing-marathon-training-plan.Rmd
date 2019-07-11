@@ -1,0 +1,87 @@
+---
+title: "Preparing Marathon Training Plan"
+author: "Christian Million"
+date: '2019-07-10'
+categories: running
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+lastmod: '2019-07-10T20:09:27-07:00'
+projects: []
+slug: preparing-marathon-training-plan
+subtitle: ''
+summary: ''
+tags: r
+authors: []
+draft: true
+---
+
+Beginning with this post, I am hoping to create a sequence of posts that document the process for developing some Marathon training tools.
+
+The purpose of these posts:
+
+- Practice using R in new ways to solve real life problems.
+
+- Use the outcome to track my CIM 2019 Training.
+
+- Practice Exploratory Data Analysis.
+
+- Sharpen my communication skills.
+ 
+```{r, message = FALSE, warning = FALSE}
+# References: http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html
+
+# install.packages('rvest')
+# install.packages('robotstxt')
+
+# Load Necessary Packages
+library(robotstxt)
+library(rvest)
+library(dplyr)
+library(tidyr)
+
+# URL of Website to scrape
+url <- "https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/"
+
+# An Xpath (identifier?)
+xpath <- '//*[@id="miles"]/div/table'
+
+# Is is acceptable to scrape this webpage?
+robotstxt::paths_allowed(url)
+
+ 
+
+# Read webpage and convert all tables to a dataframe
+hals_intermediate2 <- url %>%
+  xml2::read_html() %>% # Received a Warning message: \n'rvest::html' is deprecated.\nUse 'xml2::read_html' instead.
+  rvest::html_nodes("table") %>% # or rvest::html_nodes(xpath = "xpath")
+  rvest::html_table()
+
+# Select the dataframe that uses Miles, not Kilometer
+plan <- hals_intermediate2[[1]]
+
+# Add the dates
+tidy_plan <- plan %>%
+  gather(key = "weekday", value = "miles", Mon:Sun)
+
+ 
+
+date_lu <- data.frame(weekday = rep(unique(tidy_plan$weekday), times = 18),
+                      Week = rep(1:18, each = 7),
+                      date = seq(as.Date("2019-08-05"),as.Date("2019-12-08"), by = "day"),
+                      stringsAsFactors = FALSE)
+
+tidy_plan <- tidy_plan %>%
+  left_join(date_lu, by=c('weekday', 'Week'))
+
+tidy_plan <- tidy_plan %>%
+  mutate(pace_ind = grepl('pace', miles),
+         miles = case_when(grepl(' mi', miles) ~ as.numeric(gsub(' mi.*',"", miles)),
+                           miles %in% c('Cross', 'Rest') ~ 0,
+                           miles == "Half Marathon" ~ 13.1,
+                           miles == "Marathon" ~ 26.2,
+                           TRUE ~ as.numeric(miles)))
+```
+
