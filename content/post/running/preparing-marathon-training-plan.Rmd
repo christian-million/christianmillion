@@ -1,5 +1,5 @@
 ---
-title: "Preparing Marathon Training Plan"
+title: "Create a Marathon Training Schedule in R"
 author: "Christian Million"
 date: '2019-07-10'
 categories: running
@@ -20,7 +20,7 @@ draft: true
 
 Beginning with this post, I am hoping to create a sequence of posts that document the process for developing some Marathon training tools.
 
-The purpose of these posts:
+The purpose of these posts is to:
 
 - Practice using R in new ways to solve real life problems.
 
@@ -29,10 +29,24 @@ The purpose of these posts:
 - Practice Exploratory Data Analysis.
 
 - Sharpen my communication skills.
- 
-```{r, message = FALSE, warning = FALSE}
-# References: http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html
 
+# Ultimate Goal
+
+The ultimate goal is to create a tool (visual / report / dashboard) that allows me to compare information about my actual runs with information from my training schedule runs. We'll figure out how it will work with trial and error. 
+
+The first step, and the purpose of this post, is to develop my training schedule - the yard stick against which I will compare my actual runs.
+
+# Scrape the Web
+
+I decided to use Hal Higdons Intermediate 2 Marathon training program as my default training schedule for CIM 2019. You can see a web version of this schedule near the bottom of [this webpage](https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/). I used his Intermediate 1 Marathon training program last year and was happy with the results.
+
+Last year, I copied the table from his website and pasted it into Excel. Then I printed it out and kept in on my kitchen table. This year, I wanted to try to scrape Hal's website directly into R, and reduce the amount of point-and-clicks.
+
+Until literally 2 minutes after googling "scrape website table r", finding [this blog post](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html), and running the code, I thought I would never successfully scrape a website. With no background in programming, it sounded complicated and easy to mess up. It probably still is, but luck was on my side, and I was able to successfully pull Hal's training program into R with just a few lines of code.
+
+First, I had to install [`rvest`](https://rvest.tidyverse.org/) (A package to facilitate webscraping) and [`robotstxt`](https://docs.ropensci.org/robotstxt/) (A package to make sure it's okay to scrape a specific webpage.) Then I load all of the necessary packages I'll need to create my training schedule.
+
+```{r, message = FALSE, warning = FALSE}
 # install.packages('rvest')
 # install.packages('robotstxt')
 
@@ -41,27 +55,55 @@ library(robotstxt)
 library(rvest)
 library(dplyr)
 library(tidyr)
+```
 
+Then I copied the url of the page where the table lives and assigned it to a variable called `url`.
+
+```{r}
 # URL of Website to scrape
 url <- "https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/"
+```
 
-# An Xpath (identifier?)
-xpath <- '//*[@id="miles"]/div/table'
+Next, we want to see if that url is okay with us scraping it. It's just a courteous thing to do.
 
+```{r}
 # Is is acceptable to scrape this webpage?
 robotstxt::paths_allowed(url)
+```
 
- 
 
+Great, now we can scrape it.
+
+```{r}
 # Read webpage and convert all tables to a dataframe
 hals_intermediate2 <- url %>%
-  xml2::read_html() %>% # Received a Warning message: \n'rvest::html' is deprecated.\nUse 'xml2::read_html' instead.
+  xml2::read_html() %>% # Received a Warning message: 'rvest::html' is deprecated. Use 'xml2::read_html' instead.
   rvest::html_nodes("table") %>% # or rvest::html_nodes(xpath = "xpath")
   rvest::html_table()
+```
 
+This gives us a list of 2 `data.frame`s. One with the tables contents in miles and one with the tables contents in kilometers. We want to select the one with miles, which is the first one and assign it to an object we're calling `plan`.
+
+```{r}
 # Select the dataframe that uses Miles, not Kilometer
 plan <- hals_intermediate2[[1]]
+```
 
+Another option would have been to find the Xpath (maybe a unique identifier?) of the table I wanted to scrape. This would return a list of just 1 `data.frame`, the one with miles. Follow [this previously mentioned blog post](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html) for how to do that.
+
+```{r, eval = FALSE}
+# An Xpath
+xpath <- '//*[@id="miles"]/div/table'
+
+# Alternative Call
+hals_intermediate2 <- url %>%
+  xml2::read_html() %>% # Received a Warning message: 'rvest::html' is deprecated. Use 'xml2::read_html' instead.
+  rvest::html_nodes(xpath = xpath) %>%
+  rvest::html_table()
+```
+
+
+```{r}
 # Add the dates
 tidy_plan <- plan %>%
   gather(key = "weekday", value = "miles", Mon:Sun)
