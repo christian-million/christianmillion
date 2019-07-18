@@ -1,0 +1,98 @@
+---
+title: 5 Ways to Calculate Student Persistence
+author: Christian Million
+date: '2019-07-17'
+slug: 5-ways-to-calculate-student-persistence
+draft: true
+categories:
+  - institutional_research
+tags:
+  - IR
+  - students_data
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-07-17T21:16:52-07:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+# Read in Data -----------------------------------------------------
+
+```{r}
+data <- read.csv('per.csv', stringsAsFactors = FALSE)
+```
+
+# Prepare the Data -------------------------------------------------
+
+```{r}
+data_clean <- data %>%
+    clean_names() %>%
+    select(person_id, term, gender, ed_goal) %>%
+    left_join(lu$terms[c('term', 'term_numeric')], by = 'term') %>%
+    mutate(term_numeric = as.numeric(term_numeric))
+```
+
+# METHOD #1: Base R ------------------------------------------------
+
+```{r}
+  # Create 2 dataframes.
+  data_fall_2017 <- data_clean[data_clean$term == "2017CFA",]
+  data_fall_2018 <- data_clean[data_clean$term == "2018CFA",]
+  
+  data_fall_2018$persist <- 1
+  
+  # Join
+  data_merged <- merge(data_fall_2017, data_fall_2018, by = c("person_id"), all.x = TRUE)
+  
+  # Calculate
+  sum(data_merged$persist, na.rm = TRUE)/length(data_merged$persist)
+```
+
+# METHOD #2: dplyr
+
+```{r}
+  # Alternate way of creating the data
+  data_fall_2017 <- data_clean %>%
+    filter(term == "2017CFA")
+  
+  data_fall_2018 <- data_clean %>%
+    filter(term == "2018CFA")%>%
+    select(person_id)%>%
+    mutate(persist = 1)
+  
+  # Join
+  data_merged <- data_fall_2017 %>%
+    left_join(data_fall_2018, by = 'person_id')
+  
+  # Calculate
+  data_merged %>%
+    summarise(persist_rate = sum(persist, na.rm = T)/n())
+```
+
+# METHOD #3: researchR (persistence() function)
+
+```{r}
+  researchR::persistence(data_clean, person_id, term_numeric, term, overall = TRUE, calculate = TRUE)
+```
+
+# METHOD #4: yccd package (lu_() function)
+
+```{r}
+  x <- yccd::lu_(data_fall_2017$person_id, data_fall_2018, "person_id", "persist", na = 0)
+  sum(x)/length(x)
+```
+
+# METHOD #5: yccd package (calc_persist() function)
+
+```{r}
+  data_clean$yccd_persistence <- yccd::calc_persist(data_clean$person_id, term_rank = data_clean$term_numeric)
+  
+  data_clean %>%
+    group_by(term) %>%
+    summarise(persist_rate = sum(yccd_persistence)/n())
+```
