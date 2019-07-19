@@ -1,98 +1,260 @@
 ---
-title: 5 Ways to Calculate Student Persistence
-author: Christian Million
+title: "5 Ways to Calculate Student Persistence in R"
+author: "Christian Million"
 date: '2019-07-17'
-slug: 5-ways-to-calculate-student-persistence
-draft: true
-categories:
-  - institutional_research
-tags:
-  - IR
-  - students_data
-subtitle: ''
-summary: ''
-authors: []
-lastmod: '2019-07-17T21:16:52-07:00'
+categories: institutional_research
+draft: yes
 featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
+lastmod: '2019-07-17T21:16:52-07:00'
 projects: []
+slug: 5-ways-to-calculate-student-persistence
+subtitle: ''
+summary: ''
+tags:
+- IR
+- studentdata
+- education
+authors: []
 ---
 
-# Read in Data -----------------------------------------------------
-
-```{r}
-data <- read.csv('per.csv', stringsAsFactors = FALSE)
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      messages = FALSE)
 ```
 
-# Prepare the Data -------------------------------------------------
+
+# Motivation
+
+Before I spent the time to learn R, I did all of my analyses in Excel. For most tasks, Excel worked well, but I dreaded calculating student persistence. It was tedious, error prone, and time consuming. Worse yet, I was unable to calculate persistence across many terms, so I had to repeat the process over and over. There was probably a better way for me to do it within Excel, but I never took the time to learn it.
+
+Once I became comfortable enough with R's syntax, I was quickly able to calculate persistence on the fly. It was so exciting that I took the time to convert it into my first function. It was an early version of my `persistence()` function.
+
+I soon found out there are many approaches to calculating persistence. In this post, I'm hoping to weigh the limitations and benefits of each method.
+
+# What is Student Persistence?
+
+The word 'persistence' can mean many different things, depending on the context. For my purposes, I am interested in "term-to-term" persistence, which measures whether a student in Term A subsequently enrolled in Term B. Term-to-term persistence can mean:
+
+  - "Fall-to-Spring" (e.g., a student enrolled in the Fall semester of 2018 and then enrolled in the next Spring semester of 2019)
+  
+  - "Fall-to-Fall" (e.g., a student enrolled in the Fall semester of 2018 and then enrolled in the next Fall semester of 2019)
+  
+  - any other combination of terms in sequence -- winter quarters, summer sessions, etc. The word 'term' is used as an institutional agnostic word for "semester", "quarter", "trimester", or what-have-you.
+
+### How is it used?
+
+The persistence rate of a cohort of students is sometimes used as a metric to measure student success, student progression, or as a feature in a model to predict enrollment for next year. The idea is that if a student returns to next semester, they are more likely to be successful in achieving their academic goals.
+
+### Why is it important?
+
+From an institutional perspective, we are likely to get more funding when the persistence rate is high. We have more enrollments and more students are likely to earn their degree / certificate (and at a faster rate). Our numbers as an institution look better when we have high persistence. It is important to measure persistence rates for subpopulations, so that if we implement an intervention, we can measure whether or not that intervention effected the likelihood of those students returning.
+
+From a student perspective, in general, persistence is beneficial because they are making progress towards their academic goal. More units and courses completed implies they will recieve their award / certificate sooner or transfer to another institution.
+
+More persistence isn't always better, though. A common example of this is Career Technical Education (CTE) focused students. Students take classes in one term to gain skills that employers are looking for. Once they gain those skills, and maybe get hired, there is no reason to come back the next term to pursue a terminal certificate or degree or transfer. Returning may mean working less, spending more on tuition, accumulating unnecessary units, or anything not conducive to their goals.
+
+# General Approaches to Calculating Persistence
+
+So, the title of this post is a little misleading. While I will show 5 different ways to calculate student persistence, two of them use a similar *approach*, but a different technical implementation. In general though, I've found these approaches useful:
+
+  1. Joins - Joining 2 data.frames. 1 contains the initial term, the other contains the subsequent term.
+  
+  2. Lead - Arranges a data.frame with all term data, then implements a `lead` function to see whether a student ended up in the lead term.
+  
+  3. Lookup - Similar to Excels VLOOKUP (and Joins, really). Lookup values from initial term in target term.
+  
+All of these approaches have an important common feature: They create a persistence indicator variable first on the original data, and then separately, we calculate the persistence from that indicator. This is crucial for my work, because I need to look at persistence among many subpopulations. The indicator allows that to be more dynamic. Additionally, I sometimes need to export the resulting data into another software (Like PowerBI), and so the indicator is just one feature of many.
+
+This post should probably be titled "3 Approaches to Calculating a Persistence Indicator" instead.
+
+# Read in Data 
 
 ```{r}
-data_clean <- data %>%
-    clean_names() %>%
-    select(person_id, term, gender, ed_goal) %>%
-    left_join(lu$terms[c('term', 'term_numeric')], by = 'term') %>%
-    mutate(term_numeric = as.numeric(term_numeric))
+library(readr, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+
+# Fake Student Data
+url_data <- "https://raw.githubusercontent.com/christian-million/student_data/master/student_data.csv"
+
+# Read in student data
+student_data <- read_csv(url_data, col_types = "cnccn")
 ```
 
-# METHOD #1: Base R ------------------------------------------------
+## Approach #1: Joins
+
+In general, this approach takes a `data.frame` containing only records for the initial term and joins against it a `data.frame` containing only the target subsequent term records. In the resulting `data.frame`, if there is a record for the initial term *and* the target subsequent term columns, a student has persisted.
+
+I think the benefit to this approach is that it is intuitive. It's beneficial to use with just 1 term-to-term calculation.
+
+Some downsides are that you have to do some processing before if you don't want to have an unmanageable amount of columns. And your output is a `data.frame` that is structured differently from your input. Also, doing more than one term-to-term (i.e, fall-to-spring-to-fall) is harder and the resulting `data.frame`, again,  would have too many columns.
+
+#### Base R
 
 ```{r}
+# Create Indicator
+
   # Create 2 dataframes.
-  data_fall_2017 <- data_clean[data_clean$term == "2017CFA",]
-  data_fall_2018 <- data_clean[data_clean$term == "2018CFA",]
+  data_fall_2017 <- student_data[student_data$term == 20177,]
+  data_fall_2018 <- student_data[student_data$term == 20187,]
   
   data_fall_2018$persist <- 1
   
   # Join
-  data_merged <- merge(data_fall_2017, data_fall_2018, by = c("person_id"), all.x = TRUE)
+  data_merged <- merge(data_fall_2017, data_fall_2018, by = c("student_id"), all.x = TRUE)
   
-  # Calculate
+# Calculate
+  
   sum(data_merged$persist, na.rm = TRUE)/length(data_merged$persist)
 ```
 
-# METHOD #2: dplyr
+#### dplyr
 
 ```{r}
+
+# Create Indicator
+
   # Alternate way of creating the data
-  data_fall_2017 <- data_clean %>%
-    filter(term == "2017CFA")
+  data_fall_2017 <- student_data %>%
+    filter(term == "20177")
   
-  data_fall_2018 <- data_clean %>%
-    filter(term == "2018CFA")%>%
-    select(person_id)%>%
+  data_fall_2018 <- student_data %>%
+    filter(term == "20187") %>%
+    select(student_id) %>%
     mutate(persist = 1)
   
   # Join
   data_merged <- data_fall_2017 %>%
-    left_join(data_fall_2018, by = 'person_id')
+    left_join(data_fall_2018, by = 'student_id')
   
-  # Calculate
+# Calculate
   data_merged %>%
     summarise(persist_rate = sum(persist, na.rm = T)/n())
 ```
 
-# METHOD #3: researchR (persistence() function)
+## Approach #2: Lead
+
+In general, this approach takes a single dataframe, ranks the terms, sorts the dataframe by id and term, and then implements a 'lead' style function that finds the next value in the vector. If the current value + 1 is equal to the next, then persistence!
+
+The benefit to this approach is that all of the data stays in a single data.frame and you can find the persistence for many terms-to-terms.
+
+A downside to this approach is that it is harder to understand how the calculation is being made, in my opinion. It takes a little more code to implement, too. Though that isn't as much of a problem if you wrap it up in a function.
+
+#### Base R
 
 ```{r}
-  researchR::persistence(data_clean, person_id, term_numeric, term, overall = TRUE, calculate = TRUE)
-```
+  fall_to_fall <- student_data[student_data$term == 20177 | student_data$term == 20187,]
+# Create Indicator
 
-# METHOD #4: yccd package (lu_() function)
+  id <- fall_to_fall$student_id
+  term <- fall_to_fall$term
 
-```{r}
-  x <- yccd::lu_(data_fall_2017$person_id, data_fall_2018, "person_id", "persist", na = 0)
-  sum(x)/length(x)
-```
-
-# METHOD #5: yccd package (calc_persist() function)
-
-```{r}
-  data_clean$yccd_persistence <- yccd::calc_persist(data_clean$person_id, term_rank = data_clean$term_numeric)
+  # Get dense rank of each term
+  r <- rank(term, na.last = "keep")
+  denseRank <- match(r, sort(unique(r)))
   
-  data_clean %>%
-    group_by(term) %>%
-    summarise(persist_rate = sum(yccd_persistence)/n())
+  # Dataframe with order
+  dd <- data.frame(id, term, denseRank, order = 1:length(id), stringsAsFactors = FALSE)
+  
+  # Order by ID, then ranked term
+  dd <- dd[with(dd, order(id, denseRank)), ]
+  
+  # For each id, what would be the next ranked term?
+  dd$nextrank <- with(dd, ave(denseRank, id, FUN = function(x) c(tail(x, -1), rep(NA, 1))))
+  
+  # Does each id have a record for the next ranked term?
+  dd$persist <- with(dd, ifelse(!is.na(nextrank) & nextrank == denseRank + 1, 1, 0))
+  
+  # Return to original order.
+  fall_to_fall$persist <- dd$persist[with(dd, order(order))]
+
+# Calculate
+  
+  sum(fall_to_fall$persist[fall_to_fall$term == 20177])/length(fall_to_fall$persist[fall_to_fall$term == 20177])
+  
 ```
+
+#### dplyr
+
+```{r}
+  fall_to_fall <- student_data[student_data$term == 20177 | student_data$term == 20187,]
+# Create indicator 
+  fall_to_fall <- fall_to_fall %>%
+    mutate(denseRank = dense_rank(term)) %>% 
+    group_by(student_id) %>%
+    arrange(denseRank) %>%
+    mutate(nextrank = lead(denseRank)) %>%
+    mutate(persistence_indicator = case_when(nextrank == denseRank + 1 ~ 1, TRUE ~ 0)) %>%
+    select(-nextrank, -denseRank)
+
+# Calculate
+  fall_to_fall %>%
+    group_by(term) %>%
+    summarise(persistence = sum(persistence_indicator)/n())
+```
+
+## Approach #3: Lookup
+
+This approach is a cleaner, but more limiting version of the join approach. It came from a function I created that served as an Excel VLOOKUP equivalent.
+
+```{r}
+# Using dataframes from above (data_fall_2017 and data_fall_2018)
+
+# Create indicator
+  out <- data_fall_2018$persist[match(data_fall_2017$student_id, data_fall_2018$student_id)]
+  data_fall_2017$persist <- ifelse(is.na(out), 0, out)
+  
+# Calculate
+  sum(data_fall_2017$persist)/length(data_fall_2017$persist)
+```
+
+# Conclusions
+
+In general, I prefer the base R version of Approach #2. This is because, once wrapped into a function, I think it produces the most versatile output with the least amount of code. You could wrap the `dplyr` version of Approach #2 into a function (which I have), but I'm still not as comfortable with Non-Standard Evaluation, though it is nice not to have to reference the data source twice.
+
+# Appendix
+
+Here are some of the Approaches, wrapped in functions.
+
+#### Approach #2 - Base R
+
+```r
+calc_persist <- function (id, term) {
+    r <- rank(term, na.last = "keep")
+    denseRank <- match(r, sort(unique(r)))
+    dd <- data.frame(id, term, denseRank, order = 1:length(id), stringsAsFactors = FALSE)
+    dd <- dd[with(dd, order(id, denseRank)), ]
+    dd$nextrank <- with(dd, ave(denseRank, id, FUN = function(x) c(tail(x, -1), rep(NA, 1))))
+    dd$persist <- with(dd, ifelse(!is.na(nextrank) & nextrank == denseRank + 1, 1, 0))
+    dd <- dd[with(dd, order(order)), ]
+    return(dd$persist)
+}
+```
+#### Approach #2 - dplyr
+
+```r
+calc_persist2 <- function (df, id, rank) {
+
+    enq_id <- enquo(id)
+    enq_rank <- enquo(rank)
+
+    df %>% ungroup() %>% 
+    mutate(denseRank = dense_rank(UQ(enq_rank))) %>% 
+    group_by(UQ(enq_id)) %>%
+    arrange(denseRank) %>%
+    mutate(nextrank = lead(denseRank)) %>%
+    mutate(persist = case_when(nextrank == denseRank + 1 ~ 1, TRUE ~ 0)) %>% ungroup() %>% select(-nextrank, -denseRank)
+```
+#### Approach #3
+
+```r
+vlookup <- function (x, data, key, value, na = 0) {
+    m <- match(x, data[[key]])
+    out <- data[[value]][m]
+    ifelse(is.na(out), na, out)
+}
+```
+

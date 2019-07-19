@@ -1,5 +1,5 @@
 ---
-title: "Preparing Marathon Training Plan"
+title: "Create a Marathon Training Schedule in R"
 author: "Christian Million"
 date: '2019-07-10'
 categories: running
@@ -21,43 +21,60 @@ draft: true
 
 
 <p>Beginning with this post, I am hoping to create a sequence of posts that document the process for developing some Marathon training tools.</p>
-<p>The purpose of these posts:</p>
+<p>The purpose of these posts is to:</p>
 <ul>
 <li><p>Practice using R in new ways to solve real life problems.</p></li>
 <li><p>Use the outcome to track my CIM 2019 Training.</p></li>
 <li><p>Practice Exploratory Data Analysis.</p></li>
 <li><p>Sharpen my communication skills.</p></li>
 </ul>
-<pre class="r"><code># References: http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html
-
-# install.packages(&#39;rvest&#39;)
+<div id="ultimate-goal" class="section level1">
+<h1>Ultimate Goal</h1>
+<p>The ultimate goal is to create a tool (visual / report / dashboard) that allows me to compare information about my actual runs with information from my training schedule runs. We’ll figure out how it will work with trial and error.</p>
+<p>The first step, and the purpose of this post, is to develop my training schedule - the yard stick against which I will compare my actual runs.</p>
+</div>
+<div id="scrape-the-web" class="section level1">
+<h1>Scrape the Web</h1>
+<p>I decided to use Hal Higdons Intermediate 2 Marathon training program as my default training schedule for CIM 2019. You can see a web version of this schedule near the bottom of <a href="https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/">this webpage</a>. I used his Intermediate 1 Marathon training program last year and was happy with the results.</p>
+<p>Last year, I copied the table from his website and pasted it into Excel. Then I printed it out and kept in on my kitchen table. This year, I wanted to try to scrape Hal’s website directly into R, and reduce the amount of point-and-clicks.</p>
+<p>Until literally 2 minutes after googling “scrape website table r”, finding <a href="http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html">this blog post</a>, and running the code, I thought I would never successfully scrape a website. With no background in programming, it sounded complicated and easy to mess up. It probably still is, but luck was on my side, and I was able to successfully pull Hal’s training program into R with just a few lines of code.</p>
+<p>First, I had to install <a href="https://rvest.tidyverse.org/"><code>rvest</code></a> (A package to facilitate webscraping) and <a href="https://docs.ropensci.org/robotstxt/"><code>robotstxt</code></a> (A package to make sure it’s okay to scrape a specific webpage.) Then I load all of the necessary packages I’ll need to create my training schedule.</p>
+<pre class="r"><code># install.packages(&#39;rvest&#39;)
 # install.packages(&#39;robotstxt&#39;)
 
 # Load Necessary Packages
 library(robotstxt)
 library(rvest)
 library(dplyr)
-library(tidyr)
-
-# URL of Website to scrape
-url &lt;- &quot;https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/&quot;
-
-# An Xpath (identifier?)
-xpath &lt;- &#39;//*[@id=&quot;miles&quot;]/div/table&#39;
-
-# Is is acceptable to scrape this webpage?
+library(tidyr)</code></pre>
+<p>Then I copied the url of the page where the table lives and assigned it to a variable called <code>url</code>.</p>
+<pre class="r"><code># URL of Website to scrape
+url &lt;- &quot;https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/&quot;</code></pre>
+<p>Next, we want to see if that url is okay with us scraping it. It’s just a courteous thing to do.</p>
+<pre class="r"><code># Is is acceptable to scrape this webpage?
 robotstxt::paths_allowed(url)</code></pre>
+<pre><code>## 
+ www.halhigdon.com                      No encoding supplied: defaulting to UTF-8.</code></pre>
 <pre><code>## [1] TRUE</code></pre>
+<p>Great, now we can scrape it.</p>
 <pre class="r"><code># Read webpage and convert all tables to a dataframe
 hals_intermediate2 &lt;- url %&gt;%
-  xml2::read_html() %&gt;% # Received a Warning message: \n&#39;rvest::html&#39; is deprecated.\nUse &#39;xml2::read_html&#39; instead.
+  xml2::read_html() %&gt;% # Received a Warning message: &#39;rvest::html&#39; is deprecated. Use &#39;xml2::read_html&#39; instead.
   rvest::html_nodes(&quot;table&quot;) %&gt;% # or rvest::html_nodes(xpath = &quot;xpath&quot;)
-  rvest::html_table()
+  rvest::html_table()</code></pre>
+<p>This gives us a list of 2 <code>data.frame</code>s. One with the tables contents in miles and one with the tables contents in kilometers. We want to select the one with miles, which is the first one and assign it to an object we’re calling <code>plan</code>.</p>
+<pre class="r"><code># Select the dataframe that uses Miles, not Kilometer
+plan &lt;- hals_intermediate2[[1]]</code></pre>
+<p>Another option would have been to find the Xpath (maybe a unique identifier?) of the table I wanted to scrape. This would return a list of just 1 <code>data.frame</code>, the one with miles. Follow <a href="http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html">this previously mentioned blog post</a> for how to do that.</p>
+<pre class="r"><code># An Xpath
+xpath &lt;- &#39;//*[@id=&quot;miles&quot;]/div/table&#39;
 
-# Select the dataframe that uses Miles, not Kilometer
-plan &lt;- hals_intermediate2[[1]]
-
-# Add the dates
+# Alternative Call
+hals_intermediate2 &lt;- url %&gt;%
+  xml2::read_html() %&gt;% # Received a Warning message: &#39;rvest::html&#39; is deprecated. Use &#39;xml2::read_html&#39; instead.
+  rvest::html_nodes(xpath = xpath) %&gt;%
+  rvest::html_table()</code></pre>
+<pre class="r"><code># Add the dates
 tidy_plan &lt;- plan %&gt;%
   gather(key = &quot;weekday&quot;, value = &quot;miles&quot;, Mon:Sun)
 
@@ -78,3 +95,9 @@ tidy_plan &lt;- tidy_plan %&gt;%
                            miles == &quot;Half Marathon&quot; ~ 13.1,
                            miles == &quot;Marathon&quot; ~ 26.2,
                            TRUE ~ as.numeric(miles)))</code></pre>
+<pre><code>## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by
+## coercion
+
+## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by
+## coercion</code></pre>
+</div>
