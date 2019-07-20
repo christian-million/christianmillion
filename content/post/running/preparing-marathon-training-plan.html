@@ -3,6 +3,7 @@ title: "Create a Marathon Training Schedule in R"
 author: "Christian Million"
 date: '2019-07-10'
 categories: running
+draft: no
 featured: no
 image:
   caption: ''
@@ -15,7 +16,6 @@ subtitle: ''
 summary: ''
 tags: r
 authors: []
-draft: true
 ---
 
 
@@ -46,15 +46,15 @@ draft: true
 library(robotstxt)
 library(rvest)
 library(dplyr)
-library(tidyr)</code></pre>
+library(tidyr)
+library(runr) # &lt;- Homemade R package to help with this post</code></pre>
+<p>You’ll notice I loaded a package called <code>runr</code>. This is an R package that I created to help me with this post. You can check out the documentation <a href="https://runr.christianmillion.com">here</a>. I’m hoping to build more into the package, to help pull in strava / garmin information.</p>
 <p>Then I copied the url of the page where the table lives and assigned it to a variable called <code>url</code>.</p>
 <pre class="r"><code># URL of Website to scrape
 url &lt;- &quot;https://www.halhigdon.com/training-programs/marathon-training/intermediate-2-marathon/&quot;</code></pre>
-<p>Next, we want to see if that url is okay with us scraping it. It’s just a courteous thing to do.</p>
+<p>Next, we want to see if that url is okay with us scraping it. It’s a courteous thing to do, I hear.</p>
 <pre class="r"><code># Is is acceptable to scrape this webpage?
 robotstxt::paths_allowed(url)</code></pre>
-<pre><code>## 
- www.halhigdon.com                      No encoding supplied: defaulting to UTF-8.</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>Great, now we can scrape it.</p>
 <pre class="r"><code># Read webpage and convert all tables to a dataframe
@@ -74,30 +74,85 @@ hals_intermediate2 &lt;- url %&gt;%
   xml2::read_html() %&gt;% # Received a Warning message: &#39;rvest::html&#39; is deprecated. Use &#39;xml2::read_html&#39; instead.
   rvest::html_nodes(xpath = xpath) %&gt;%
   rvest::html_table()</code></pre>
+<p>Let’s take a look at our table.</p>
+<pre class="r"><code>plan</code></pre>
+<pre><code>##    Week   Mon      Tue       Wed      Thu  Fri        Sat           Sun
+## 1     1 Cross 3 mi run  5 mi run 3 mi run Rest  5 mi pace            10
+## 2     2 Cross 3 mi run  5 mi run 3 mi run Rest   5 mi run            11
+## 3     3 Cross 3 mi run  6 mi run 3 mi run Rest  6 mi pace             8
+## 4     4 Cross 3 mi run  6 mi run 3 mi run Rest  6 mi pace            13
+## 5     5 Cross 3 mi run  7 mi run 3 mi run Rest   7 mi run            14
+## 6     6 Cross 3 mi run  7 mi run 3 mi run Rest  7 mi pace            10
+## 7     7 Cross 4 mi run  8 mi run 4 mi run Rest  8 mi pace            16
+## 8     8 Cross 4 mi run  8 mi run 4 mi run Rest   8 mi run            17
+## 9     9 Cross 4 mi run  9 mi run 4 mi run Rest       Rest Half Marathon
+## 10   10 Cross 4 mi run  9 mi run 4 mi run Rest  9 mi pace            19
+## 11   11 Cross 5 mi run 10 mi run 5 mi run Rest  10 mi run            20
+## 12   12 Cross 5 mi run  6 mi run 5 mi run Rest  6 mi pace            12
+## 13   13 Cross 5 mi run 10 mi run 5 mi run Rest 10 mi pace            20
+## 14   14 Cross 5 mi run  6 mi run 5 mi run Rest   6 mi run            12
+## 15   15 Cross 5 mi run 10 mi run 5 mi run Rest 10 mi pace            20
+## 16   16 Cross 5 mi run  8 mi run 5 mi run Rest  4 mi pace            12
+## 17   17 Cross 4 mi run  6 mi run 4 mi run Rest   4 mi run             8
+## 18   18 Cross 3 mi run  4 mi run     Rest Rest   2 mi run      Marathon</code></pre>
+<p>The current format of the training plan is easy to reference as a human. I’ll likely print this out and reference it before each run. Unfortunately, it is not structured in a way that will allow us to analyze the data. Let’s clean it up a bit.</p>
+</div>
+<div id="prepare-training-schedule-for-analysis" class="section level1">
+<h1>Prepare Training Schedule for Analysis</h1>
+<p>Now that we have successfully scraped Hal’s website, let’s tidy up the data so that it is “analysis-ready”.</p>
+<p>First, we’ll <code>gather</code> the weekday columns into one column, so that we have a long structured <code>data.frame</code>.</p>
 <pre class="r"><code># Add the dates
 tidy_plan &lt;- plan %&gt;%
-  gather(key = &quot;weekday&quot;, value = &quot;miles&quot;, Mon:Sun)
-
- 
-
+  gather(key = &quot;weekday&quot;, value = &quot;miles&quot;, Mon:Sun)</code></pre>
+<p>Then, we’ll create a lookup table of the dates each run will take place. Since I will be starting the training on August 5th and the race is on December 8th, we can easily get all of the dates between those two dates, using <code>seq()</code>. We can join this to our original <code>plan</code>.</p>
+<pre class="r"><code># Create Date Lookup Table
 date_lu &lt;- data.frame(weekday = rep(unique(tidy_plan$weekday), times = 18),
                       Week = rep(1:18, each = 7),
                       date = seq(as.Date(&quot;2019-08-05&quot;),as.Date(&quot;2019-12-08&quot;), by = &quot;day&quot;),
                       stringsAsFactors = FALSE)
 
 tidy_plan &lt;- tidy_plan %&gt;%
-  left_join(date_lu, by=c(&#39;weekday&#39;, &#39;Week&#39;))
-
-tidy_plan &lt;- tidy_plan %&gt;%
-  mutate(pace_ind = grepl(&#39;pace&#39;, miles),
+  left_join(date_lu, by=c(&#39;weekday&#39;, &#39;Week&#39;))</code></pre>
+<p>Hal’s plan contains text in the column that shows how many miles (and at what pace) to run. Let’s first use the text to identify which days we should run at “Race Pace”, and then get rid of the text, so that we can use that column in calculations.</p>
+<pre class="r"><code>tidy_plan &lt;- tidy_plan %&gt;%
+  mutate(race_pace = grepl(&#39;pace|Marathon&#39;, miles),
          miles = case_when(grepl(&#39; mi&#39;, miles) ~ as.numeric(gsub(&#39; mi.*&#39;,&quot;&quot;, miles)),
                            miles %in% c(&#39;Cross&#39;, &#39;Rest&#39;) ~ 0,
                            miles == &quot;Half Marathon&quot; ~ 13.1,
                            miles == &quot;Marathon&quot; ~ 26.2,
                            TRUE ~ as.numeric(miles)))</code></pre>
-<pre><code>## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by
-## coercion
-
-## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by
-## coercion</code></pre>
+<p>Hal’s training plan also recommends running a 3-1 paced run, every 3 weeks or so. That means we should run the first 3 parts of the run at a slower pace, then run the last part at a faster pace. Starting on the second week, we can calculate every 3rd Sunday and desgnate it as a 3-1 run.</p>
+<pre class="r"><code>tidy_plan &lt;- tidy_plan %&gt;%
+  mutate(three_one = ifelse(weekday == &quot;Sun&quot; &amp; Week%%3 == 2, TRUE, FALSE))</code></pre>
+<p>Now, I want to create a column that tells me how fast I should run for each training run. Since my target time is “03:30:00”, we can use my <code>runr</code> package to calculate the pace.</p>
+<pre class="r"><code>runr::calc_pace(distance = 26.2,   # Marathon distance in miles
+                time = &quot;03:30:00&quot;) # Time in hours, minutes, and seconds</code></pre>
+<pre><code>## [1] &quot;08:01&quot;</code></pre>
+<p>So my goal race pace is “08:01” minutes per mile, so any day where <code>race_pace == TRUE</code> should be “08:01”. Hal recommends we run ~30-90 seconds slower than race pace on Sundays (long runs), unless it is a 3-1 run. So most sundays will be ran at “08:31”. For the 3-1 runs, we will run the first 75% of the run at “08:31” and the last 25% at “08:15”. On rest days and cross-training days, I will run 0 miles, so I’ll put the pace at “00:00”. Finally, any other runs will be run at “08:15”, a “comfortable enough pace to hold a conversation”.</p>
+<p>In the same <code>mutate</code> call, I can calculate my target time and target splits for each day.</p>
+<pre class="r"><code>tidy_plan &lt;- tidy_plan %&gt;%
+  mutate(trgt_pace = case_when(miles == 0 ~ &quot;00:00&quot;,
+                               race_pace  ~ &quot;08:01&quot;,
+                               three_one  ~ runr::calc_pace(miles,sec_to_time(time_to_sec(&quot;08:31&quot;)*(miles*.75) + time_to_sec(&quot;08:01&quot;)*(miles*.25))),
+                               weekday == &quot;Sun&quot; ~ &quot;08:31&quot;,
+                               TRUE ~ &quot;08:15&quot;),
+         trgt_time = runr::calc_time(miles, trgt_pace),
+         trgt_splits = purrr::map2(miles, trgt_time, runr::calc_splits))</code></pre>
+<p>Let’s take a look at the product so far, focusing on the first week:</p>
+<pre class="r"><code>tidy_plan %&gt;%
+  filter(Week == 1)%&gt;%
+  select(-trgt_splits) # ouput for that column is messy.</code></pre>
+<pre><code>##   Week weekday miles       date race_pace three_one trgt_pace trgt_time
+## 1    1     Mon     0 2019-08-05     FALSE     FALSE     00:00     00:00
+## 2    1     Tue     3 2019-08-06     FALSE     FALSE     08:15     24:45
+## 3    1     Wed     5 2019-08-07     FALSE     FALSE     08:15     41:15
+## 4    1     Thu     3 2019-08-08     FALSE     FALSE     08:15     24:45
+## 5    1     Fri     0 2019-08-09     FALSE     FALSE     00:00     00:00
+## 6    1     Sat     5 2019-08-10      TRUE     FALSE     08:01     40:05
+## 7    1     Sun    10 2019-08-11     FALSE     FALSE     08:31  01:25:10</code></pre>
+<p>Looks great! It may not have captured everything I may need, but it is a great start.</p>
+</div>
+<div id="next-steps" class="section level1">
+<h1>Next Steps</h1>
+<p>I’ll likely try to set up a way for me to use my <code>tidy_plan</code> to compare agains my actual runs. With that in mind, my next steps will be to find a way to pull in my running data from Garmin or Strava (Whichever is easiest).</p>
 </div>

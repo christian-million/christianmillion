@@ -28,11 +28,11 @@ Currently, my goal time for this marathon is 03:30:00 (8:00 min/mile). Though, h
 
 Last year, I had three goals for CIM:
 
- - [X] Finish!
+ - &#10003; Finish!
 
- - [X] Finish under 04:00:00
+ - &#10003; Finish under 04:00:00
  
- - [ ] Finish under 03:45:00 
+ - &#10007; Finish under 03:45:00 
  
 I felt very good about my 3:58:15 time.  I acheived two out of my three goals and I was only 13 minutes under my goal time. Also, because it was my first marathon, I was just happy to finish.
 
