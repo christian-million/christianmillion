@@ -2,7 +2,7 @@
 title: "Create a Marathon Training Schedule in R"
 author: "Christian Million"
 date: '2019-07-10'
-categories: running
+categories: null
 draft: no
 featured: no
 image:
@@ -14,7 +14,7 @@ projects: []
 slug: preparing-marathon-training-plan
 subtitle: ''
 summary: ''
-tags: r
+tags: null
 authors: []
 ---
 ```{r, include=FALSE}
