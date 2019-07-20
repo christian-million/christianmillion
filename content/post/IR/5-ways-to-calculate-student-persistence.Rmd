@@ -2,7 +2,7 @@
 title: "5 Ways to Calculate Student Persistence in R"
 author: "Christian Million"
 date: '2019-07-19'
-categories: institutional_research
+categories:
 draft: no
 featured: no
 image:
@@ -15,7 +15,7 @@ slug: 5-ways-to-calculate-student-persistence
 subtitle: ''
 summary: ''
 tags:
-- IR
+- ir
 - studentdata
 - education
 authors: []
