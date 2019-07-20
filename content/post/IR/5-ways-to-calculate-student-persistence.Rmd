@@ -1,9 +1,9 @@
 ---
 title: "5 Ways to Calculate Student Persistence in R"
 author: "Christian Million"
-date: '2019-07-17'
+date: '2019-07-19'
 categories: institutional_research
-draft: yes
+draft: no
 featured: no
 image:
   caption: ''
@@ -31,19 +31,19 @@ knitr::opts_chunk$set(echo = TRUE,
 
 Before I spent the time to learn R, I did all of my analyses in Excel. For most tasks, Excel worked well, but I dreaded calculating student persistence. It was tedious, error prone, and time consuming. Worse yet, I was unable to calculate persistence across many terms, so I had to repeat the process over and over. There was probably a better way for me to do it within Excel, but I never took the time to learn it.
 
-Once I became comfortable enough with R's syntax, I was quickly able to calculate persistence on the fly. It was so exciting that I took the time to convert it into my first function. It was an early version of my `persistence()` function.
+Once I became comfortable enough with R's syntax, I was quickly able to calculate persistence on the fly. It was so exciting that I took the time to convert it into my first function.
 
-I soon found out there are many approaches to calculating persistence. In this post, I'm hoping to weigh the limitations and benefits of each method.
+I soon found out there are many approaches to calculating persistence. In this post, I'll briefly consider the limitations and benefits of each method.
 
 # What is Student Persistence?
 
-The word 'persistence' can mean many different things, depending on the context. For my purposes, I am interested in "term-to-term" persistence, which measures whether a student in Term A subsequently enrolled in Term B. Term-to-term persistence can mean:
+The word 'persistence' can mean many different things to those in academia, depending on the context. For my purposes, I am interested in "term-to-term" persistence, which measures whether a student in Term A subsequently enrolled in Term B. Term-to-term persistence can mean:
 
   - "Fall-to-Spring" (e.g., a student enrolled in the Fall semester of 2018 and then enrolled in the next Spring semester of 2019)
   
   - "Fall-to-Fall" (e.g., a student enrolled in the Fall semester of 2018 and then enrolled in the next Fall semester of 2019)
   
-  - any other combination of terms in sequence -- winter quarters, summer sessions, etc. The word 'term' is used as an institutional agnostic word for "semester", "quarter", "trimester", or what-have-you.
+  - any other combination of terms in sequence -- winter quarters, summer sessions, etc. The word 'term' is used as an institutionally agnostic word for "semester", "quarter", "trimester", or what-have-you.
 
 ### How is it used?
 
@@ -51,27 +51,29 @@ The persistence rate of a cohort of students is sometimes used as a metric to me
 
 ### Why is it important?
 
-From an institutional perspective, we are likely to get more funding when the persistence rate is high. We have more enrollments and more students are likely to earn their degree / certificate (and at a faster rate). Our numbers as an institution look better when we have high persistence. It is important to measure persistence rates for subpopulations, so that if we implement an intervention, we can measure whether or not that intervention effected the likelihood of those students returning.
+From an institutional perspective, a college is likely to get more funding when the persistence rate is high. Enrollments increase and more students are likely to earn their degree / certificate (and at a faster rate). The numbers as an institution look better with high persistence. It is important to measure persistence rates for subpopulations, so that if the college implements an intervention, it can measure whether or not that intervention effected the likelihood of those students returning.
 
 From a student perspective, in general, persistence is beneficial because they are making progress towards their academic goal. More units and courses completed implies they will recieve their award / certificate sooner or transfer to another institution.
 
-More persistence isn't always better, though. A common example of this is Career Technical Education (CTE) focused students. Students take classes in one term to gain skills that employers are looking for. Once they gain those skills, and maybe get hired, there is no reason to come back the next term to pursue a terminal certificate or degree or transfer. Returning may mean working less, spending more on tuition, accumulating unnecessary units, or anything not conducive to their goals.
+More persistence isn't always better, though. Career Technical Education (CTE) focused students are a common example of this. Students take classes in one term to gain skills that employers are looking for. Once they gain those skills, and maybe get hired, there is no reason to come back the next term to pursue a terminal certificate or degree or transfer. Returning may mean working less, spending more on tuition, accumulating unnecessary units, or anything not conducive to their goals.
 
 # General Approaches to Calculating Persistence
 
-So, the title of this post is a little misleading. While I will show 5 different ways to calculate student persistence, two of them use a similar *approach*, but a different technical implementation. In general though, I've found these approaches useful:
+The title of this post is a little misleading. While I *will* show 5 different ways to calculate student persistence, two of them use a similar *approach*, but a different technical implementation. In general though, I've found these approaches useful:
 
-  1. Joins - Joining 2 data.frames. 1 contains the initial term, the other contains the subsequent term.
+  1. Joins - Joins 2 data.frames. One contains the initial term, the other contains the subsequent term.
   
   2. Lead - Arranges a data.frame with all term data, then implements a `lead` function to see whether a student ended up in the lead term.
   
-  3. Lookup - Similar to Excels VLOOKUP (and Joins, really). Lookup values from initial term in target term.
+  3. Lookup - Similar to Excels VLOOKUP (and Joins, really). Lookup student ID's from initial term in target term.
   
-All of these approaches have an important common feature: They create a persistence indicator variable first on the original data, and then separately, we calculate the persistence from that indicator. This is crucial for my work, because I need to look at persistence among many subpopulations. The indicator allows that to be more dynamic. Additionally, I sometimes need to export the resulting data into another software (Like PowerBI), and so the indicator is just one feature of many.
+All of these approaches have an important common feature: They create a persistence indicator variable first on the original data, and then separately, we calculate the persistence rate from that indicator. This is crucial for my work, because I need to look at persistence among many subpopulations. The indicator allows more dynamic analysis. Additionally, I sometimes need to export the resulting data into another software (Like PowerBI), and indicator is just one feature of many.
 
 This post should probably be titled "3 Approaches to Calculating a Persistence Indicator" instead.
 
 # Read in Data 
+
+First, we'll read in some student data to use in the following examples. 
 
 ```{r}
 library(readr, warn.conflicts = FALSE)
@@ -137,7 +139,7 @@ Some downsides are that you have to do some processing before if you don't want 
 
 ## Approach #2: Lead
 
-In general, this approach takes a single dataframe, ranks the terms, sorts the dataframe by id and term, and then implements a 'lead' style function that finds the next value in the vector. If the current value + 1 is equal to the next, then persistence!
+In general, this approach takes a single dataframe, ranks the terms, sorts the dataframe by id and term, and then implements a 'lead' style function that finds the next value in the vector. If the `current_term` + 1 is equal to the `next_term` for a given student, then persistence!
 
 The benefit to this approach is that all of the data stays in a single data.frame and you can find the persistence for many terms-to-terms.
 
@@ -215,6 +217,8 @@ This approach is a cleaner, but more limiting version of the join approach. It c
 
 In general, I prefer the base R version of Approach #2. This is because, once wrapped into a function, I think it produces the most versatile output with the least amount of code. You could wrap the `dplyr` version of Approach #2 into a function (which I have), but I'm still not as comfortable with Non-Standard Evaluation, though it is nice not to have to reference the data source twice.
 
+Let me know if you know other ways of approaching persistence!
+
 # Appendix
 
 Here are some of the Approaches, wrapped in functions.
@@ -246,7 +250,10 @@ calc_persist2 <- function (df, id, rank) {
     group_by(UQ(enq_id)) %>%
     arrange(denseRank) %>%
     mutate(nextrank = lead(denseRank)) %>%
-    mutate(persist = case_when(nextrank == denseRank + 1 ~ 1, TRUE ~ 0)) %>% ungroup() %>% select(-nextrank, -denseRank)
+    mutate(persist = case_when(nextrank == denseRank + 1 ~ 1, TRUE ~ 0)) %>%
+    ungroup() %>%
+    select(-nextrank, -denseRank)
+}
 ```
 #### Approach #3
 
