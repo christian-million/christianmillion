@@ -32,6 +32,6 @@ social:
   link: https://stackoverflow.com/users/9017311/christian-million
 ---
 
-I currently work at Modesto Junior College. I am an avid runner and backpacker. I enjoys improv comedy and my favorite animals are rats.
+I currently work at Modesto Junior College. I am an avid runner and backpacker. I enjoy improv comedy and my favorite animals are rats.
 
 In the future, this website will contain my thoughts on some of my interests. For now, though, I am actively working on developing the structure.
