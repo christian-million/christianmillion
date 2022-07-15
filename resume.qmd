@@ -1,0 +1,10 @@
+---
+title: "Resume"
+format:
+    html:
+        toc: false
+---
+
+For now, checkout my [LinkedIn Profile](https://www.linkedin.com/in/christianmillion/) for my education and experience.
+
+Soon, I'm hoping to use the `html_resume` template from [pagedown](https://github.com/rstudio/pagedown) to populate this page.

@@ -1,0 +1,8 @@
+---
+title: "Project 2"
+author: "Christian Million"
+date: "2022-07-17"
+category: "another"
+---
+
+# This is a placeholder for details about a future project
