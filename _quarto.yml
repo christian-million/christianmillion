@@ -2,6 +2,7 @@ project:
   type: website
 
 website:
+  favicon: img/favicon.ico
   title: "Christian Million"
   site-url: "https://christianmillion.com"
   navbar:
