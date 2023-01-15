@@ -6,4 +6,14 @@ This is the source code repository for [christianmillion.com](https://christianm
 
 # Updating the website
 
-I'll put a list of instructions here.
+- Push changes to [GitHub](https://github.com/christian-million/christianmillion)
+
+# New Posts
+
+- Add new posts to the `posts/` directory as `.qmd` files.
+
+- Change yaml option from `draft: true` to `draft: false`
+
+- Render Post
+
+- Push changes

@@ -1,0 +1,32 @@
+---
+title: Christian Million
+image: img/profile.jpg
+about:
+  id: about-christianmillion
+  template: trestles
+  image-shape: rounded
+  links:
+    - icon: envelope
+      href: mailto:christianmillion93@gmail.com
+    - icon: github
+      href: https://github.com/christian-million
+    - icon: linkedin
+      href: https://www.linkedin.com/in/christianmillion/
+    - icon: stack-overflow
+      href: https://stackoverflow.com/users/9017311/christian-million?tab=profile
+---
+
+:::{#about-christianmillion}
+
+Welcome! This is the personal website of Christian Million. This website serves as a central repository to catalog various on-goings about my career and personal life.
+
+## Education
+
+University of California, Davis | Davis, CA
+B.A. Economics | 2015
+
+## Experience
+
+See my [resume](resume.qmd)
+
+:::

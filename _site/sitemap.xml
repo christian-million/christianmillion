@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://christianmillion.com/about.html</loc>
+    <lastmod>2023-01-15T23:33:34.149Z</lastmod>
+  </url>
+  <url>
     <loc>https://christianmillion.com/index.html</loc>
-<<<<<<< HEAD
-    <lastmod>2022-07-15T23:53:20.898Z</lastmod>
+    <lastmod>2023-01-15T23:33:05.307Z</lastmod>
+  </url>
+  <url>
+    <loc>https://christianmillion.com/posts.html</loc>
+    <lastmod>2023-01-15T23:33:30.998Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/projects/proj1.html</loc>
-    <lastmod>2022-07-15T23:53:21.280Z</lastmod>
+    <lastmod>2023-01-15T23:33:06.099Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/projects/proj2.html</loc>
-    <lastmod>2022-07-15T23:53:21.663Z</lastmod>
+    <lastmod>2023-01-15T23:33:06.502Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/resume.html</loc>
-    <lastmod>2022-07-15T23:53:22.023Z</lastmod>
-=======
-    <lastmod>2022-07-15T23:27:29.021Z</lastmod>
-  </url>
-  <url>
-    <loc>https://christianmillion.com/projects/proj1.html</loc>
-    <lastmod>2022-07-15T23:27:29.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://christianmillion.com/projects/proj2.html</loc>
-    <lastmod>2022-07-15T23:27:29.798Z</lastmod>
-  </url>
-  <url>
-    <loc>https://christianmillion.com/resume.html</loc>
-    <lastmod>2022-07-15T23:27:30.185Z</lastmod>
->>>>>>> 72e54e4386f91afae7ea025cef6bd641ccf85228
+    <lastmod>2023-01-15T23:33:28.637Z</lastmod>
   </url>
 </urlset>

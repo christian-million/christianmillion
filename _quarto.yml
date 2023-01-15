@@ -7,15 +7,24 @@ website:
   site-url: "https://christianmillion.com"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
+      - href: about.qmd
+        text: About
+      - href: posts.qmd
+        text: Blog
       - href: resume.qmd
         text: Resume
-      - href: https://blog.christianmillion.com
-        text: Blog
+    right:
+      - icon: envelope
+        href: mailto:christianmillion93@gmail.com
+      - icon: github
+        href: https://github.com/christian-million
+      - icon: linkedin
+        href: https://www.linkedin.com/in/christianmillion/
+      - icon: stack-overflow
+        href: https://stackoverflow.com/users/9017311/christian-million?tab=profile
   search:
     location: navbar
-    type: textbox
+    type: overlay
 
 format:
   html:

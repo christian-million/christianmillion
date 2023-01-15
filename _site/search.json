@@ -1,16 +1,44 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Christian Million",
+    "section": "",
+    "text": "Welcome! This is the personal website of Christian Million. This website serves as a central repository to catalog various on-goings about my career and personal life.\n\n\nUniversity of California, Davis | Davis, CA B.A. Economics | 2015\n\n\n\nSee my resume"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Christian Million",
     "section": "",
-    "text": "Projects\n\n\n\n\n\n\n\nProject 1\n\n\n\n\n\n\nChristian Million\n\n\nJul 15, 2022\n\n\n\n\n\n\n\n\n\n\n\nProject 2\n\n\n\n\n\n\nChristian Million\n\n\nJul 17, 2022\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Posts\n\n\n\n\n\nProjects\n\n\n\n\n\n\n\nProject 1\n\n\n\n\n\n\nChristian Million\n\n\nJul 15, 2022\n\n\n\n\n\n\n\n\n\n\n\nProject 2\n\n\n\n\n\n\nChristian Million\n\n\nJul 17, 2022\n\n\n\n\n\n\n\n\nNo matching items\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts.html",
+    "href": "posts.html",
+    "title": "Blog",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "projects/proj1.html",
+    "href": "projects/proj1.html",
+    "title": "Project 1",
+    "section": "",
+    "text": "This is a placeholder for details about a future project"
+  },
+  {
+    "objectID": "projects/proj2.html",
+    "href": "projects/proj2.html",
+    "title": "Project 2",
+    "section": "",
+    "text": "This is a placeholder for details about a future project"
   },
   {
     "objectID": "resume.html",
     "href": "resume.html",
     "title": "Resume",
     "section": "",
-    "text": "Soon, I’m hoping to use the html_resume template from pagedown to populate this page."
+    "text": "Checkout my LinkedIn Profile for my education and experience."
   }
 ]

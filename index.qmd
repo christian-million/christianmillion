@@ -1,42 +1,22 @@
 ---
 title: Christian Million
-subtitle: |
-    (he/him) \
-    Data Analyst at [Yosemite Community College District](https://yosemite.edu)
-image: img/profile.jpg
-about:
-  id: about-christianmillion
-  template: trestles
-  image-shape: round
-  links:
-    - icon: envelope
-      href: mailto:christianmillion93@gmail.com
-    - icon: github
-      href: https://github.com/christian-million
-    - icon: linkedin
-      href: https://www.linkedin.com/in/christianmillion/
-    - icon: stack-overflow
-      href: https://stackoverflow.com/users/9017311/christian-million?tab=profile
 listing:
-    id: list-projects
-    contents: projects
-    type: grid
+    - id: list-projects
+      contents: projects
+      type: grid
+    - id: posts
+      contents: posts
+      type: grid
+      fields: [image, date, title]
+      sort: "date desc"
+      sort-ui: false
+      filter-ui: false
+      page-size: 3
 ---
 
-:::{#about-christianmillion}
+# Posts
 
-Welcome! This is the personal website of Christian Million. This website serves as a central repository to catalog various on-goings about my career and personal life.
-
-
-## Education
-
-University of California, Davis | Davis, CA
-B.A. Economics | 2015
-
-## Experience
-
-See my [resume](resume.qmd)
-
+:::{#recent-posts}
 :::
 
 # Projects
