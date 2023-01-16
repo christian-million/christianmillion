@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://christianmillion.com/about.html</loc>
-    <lastmod>2023-01-15T23:33:34.149Z</lastmod>
+    <lastmod>2023-01-16T00:24:32.239Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/index.html</loc>
-    <lastmod>2023-01-15T23:33:05.307Z</lastmod>
+    <lastmod>2023-01-16T00:24:32.754Z</lastmod>
+  </url>
+  <url>
+    <loc>https://christianmillion.com/posts/disimpact-ggplot2/index.html</loc>
+    <lastmod>2023-01-16T00:24:34.074Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/posts.html</loc>
-    <lastmod>2023-01-15T23:33:30.998Z</lastmod>
+    <lastmod>2023-01-16T00:24:34.502Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/projects/proj1.html</loc>
-    <lastmod>2023-01-15T23:33:06.099Z</lastmod>
+    <lastmod>2023-01-16T00:24:34.910Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/projects/proj2.html</loc>
-    <lastmod>2023-01-15T23:33:06.502Z</lastmod>
+    <lastmod>2023-01-16T00:24:35.303Z</lastmod>
   </url>
   <url>
     <loc>https://christianmillion.com/resume.html</loc>
-    <lastmod>2023-01-15T23:33:28.637Z</lastmod>
+    <lastmod>2023-01-16T00:24:35.700Z</lastmod>
   </url>
 </urlset>

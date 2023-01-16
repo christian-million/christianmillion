@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-10-28">
+
+<title>Christian Million - Intro to ggplot2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Christian Million</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume.html">
+ <span class="menu-text">Resume</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:christianmillion93@gmail.com"><i class="bi bi-envelope" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/christian-million"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/christianmillion/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://stackoverflow.com/users/9017311/christian-million?tab=profile"><i class="bi bi-stack-overflow" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro">Intro</a>
+  <ul class="collapse">
+  <li><a href="#our-goal" id="toc-our-goal" class="nav-link" data-scroll-target="#our-goal">Our Goal</a></li>
+  <li><a href="#how-well-get-there" id="toc-how-well-get-there" class="nav-link" data-scroll-target="#how-well-get-there">How we’ll get there</a></li>
+  </ul></li>
+  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set Up</a></li>
+  <li><a href="#quick-disproportionate-impact-analysis" id="toc-quick-disproportionate-impact-analysis" class="nav-link" data-scroll-target="#quick-disproportionate-impact-analysis">Quick Disproportionate Impact Analysis</a></li>
+  <li><a href="#ggplot2-theory" id="toc-ggplot2-theory" class="nav-link" data-scroll-target="#ggplot2-theory">ggplot2 theory?</a>
+  <ul class="collapse">
+  <li><a href="#building-layers" id="toc-building-layers" class="nav-link" data-scroll-target="#building-layers">Building layers</a></li>
+  <li><a href="#geoms-and-aesthetics" id="toc-geoms-and-aesthetics" class="nav-link" data-scroll-target="#geoms-and-aesthetics">Geoms and Aesthetics</a></li>
+  </ul></li>
+  <li><a href="#part-1-bare-minimum---get-a-basic-bar-chart" id="toc-part-1-bare-minimum---get-a-basic-bar-chart" class="nav-link" data-scroll-target="#part-1-bare-minimum---get-a-basic-bar-chart">Part 1: Bare Minimum - Get A Basic Bar Chart</a>
+  <ul class="collapse">
+  <li><a href="#add-text" id="toc-add-text" class="nav-link" data-scroll-target="#add-text">Add Text</a></li>
+  <li><a href="#clean-up-text" id="toc-clean-up-text" class="nav-link" data-scroll-target="#clean-up-text">Clean Up Text</a></li>
+  <li><a href="#highlighting-di" id="toc-highlighting-di" class="nav-link" data-scroll-target="#highlighting-di">Highlighting DI</a></li>
+  <li><a href="#adding-labels" id="toc-adding-labels" class="nav-link" data-scroll-target="#adding-labels">Adding Labels</a></li>
+  <li><a href="#reference-line" id="toc-reference-line" class="nav-link" data-scroll-target="#reference-line">Reference Line</a></li>
+  <li><a href="#end-part-1" id="toc-end-part-1" class="nav-link" data-scroll-target="#end-part-1">End Part 1</a></li>
+  </ul></li>
+  <li><a href="#part-2-extra-credit---make-the-bar-chart-fancy" id="toc-part-2-extra-credit---make-the-bar-chart-fancy" class="nav-link" data-scroll-target="#part-2-extra-credit---make-the-bar-chart-fancy">Part 2: Extra Credit - Make the Bar Chart Fancy</a>
+  <ul class="collapse">
+  <li><a href="#custom-colors" id="toc-custom-colors" class="nav-link" data-scroll-target="#custom-colors">Custom Colors</a></li>
+  <li><a href="#changing-the-y-axis-percentages" id="toc-changing-the-y-axis-percentages" class="nav-link" data-scroll-target="#changing-the-y-axis-percentages">Changing the Y-Axis Percentages</a></li>
+  <li><a href="#add-theme" id="toc-add-theme" class="nav-link" data-scroll-target="#add-theme">Add Theme</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Intro to ggplot2</h1>
+<p class="subtitle lead">Highlighting Disproportionate Impact</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">ggplot2</div>
+    <div class="quarto-category">IR</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 28, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This post was originally created for the CCC IR R Work Group - an informal gathering of IR professionals interested in learning more about R.</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Halloween Town University (HTU) wants to visualize the transfer rates of their students by ethnicity and highlight any disproportionate impact among the population. They want the visual to conform to their hideous internal branding guidelines, while communicating the critical pieces of information.</p>
+</blockquote>
+<section id="intro" class="level1">
+<h1>Intro</h1>
+<p>This tutorial is designed to introduce the <code>ggplot2</code> R package to IR professionals in the R working group, by visualizing disproportionate impact found within transfer rate across ethnicity. NOTE: The data used is artificially generated and provided by the <code>DisImpact</code> package.</p>
+<p>Specifically, we apply PPG methodology to the <code>student_equity</code> data.frame from the <code>DisImpact</code> package using the <code>di_ppg</code> function. Then, we visualize the results using functions from <code>ggplot2</code>. This is a common and important task for most research departments.</p>
+<section id="our-goal" class="level2">
+<h2 class="anchored" data-anchor-id="our-goal">Our Goal</h2>
+<p>This is what we are working towards:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This is the code to generate that graph:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference), <span class="at">color =</span> clr_green, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">color =</span> clr_purple, <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">color =</span> clr_green, <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark)) <span class="sc">+</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                       <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">02</span>))) <span class="sc">+</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">color =</span> clr_red),</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">9</span>),</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Throughout this tutorial, I’ll do my best to explain each line of the above code and how you might change it to fit your needs.</p>
+</section>
+<section id="how-well-get-there" class="level2">
+<h2 class="anchored" data-anchor-id="how-well-get-there">How we’ll get there</h2>
+<ul>
+<li><p>Set Up - Install the necessary packages.</p></li>
+<li><p>Quick Disproportionate Impact Analysis - Getting data to visualize</p></li>
+<li><p>ggplot2 theory?</p></li>
+<li><p>Part 1: Bare Minimum - Get A Basic Bar Chart</p></li>
+<li><p>Part 2: Extra Credit - Make the Bar Chart Fancy</p></li>
+</ul>
+</section>
+</section>
+<section id="set-up" class="level1">
+<h1>Set Up</h1>
+<p>I’d recommend running all of the code in this tutorial, so you can see the output from each step, as we walk through it. To follow along with this tutorial, you’ll need to have two packages installed:</p>
+<ul>
+<li><p><a href="https://ggplot2.tidyverse.org/">ggplot2</a></p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/DisImpact/vignettes/Tutorial.html">DisImpact</a></p></li>
+</ul>
+<p>You can install both packages with the following code in an R session:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">'ggplot2'</span>, <span class="st">'DisImpact'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you are following along in your own R session, once the packages are installed, you should load each package so we can use the functions contained. To do this, add the following code to the top of your script:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="quick-disproportionate-impact-analysis" class="level1">
+<h1>Quick Disproportionate Impact Analysis</h1>
+<p>Our goal in this section is to quickly get some data that we can start to visualize. In the real world, this part is the most important and may likely take the most time. However, since our focus is on visualization, we haphazardly “analyze” some artificial data and take the results at face-value.</p>
+<p>The <code>DisImpact</code> packages comes with some toy data that saves us from having to read any data into R. The data is called <code>student_equity</code> and it looks like this (selecting only a few columns):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(DisImpact<span class="sc">::</span>student_equity[<span class="fu">c</span>(<span class="st">"Student_ID"</span>, <span class="st">"Ethnicity"</span>, <span class="st">"Transfer"</span>, <span class="st">"Cohort"</span>, <span class="st">"Ed_Goal"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Student_ID</th>
+<th style="text-align: left;">Ethnicity</th>
+<th style="text-align: right;">Transfer</th>
+<th style="text-align: right;">Cohort</th>
+<th style="text-align: left;">Ed_Goal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100001</td>
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Deg/Transfer</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100002</td>
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Deg/Transfer</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100003</td>
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Deg/Transfer</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100004</td>
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Other</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100005</td>
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Deg/Transfer</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100006</td>
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Other</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>We’re going to use the <code>di_ppg</code> function from the <code>DisImpact</code> package to calculate the Disproportionate Impact across ethnicities for students’ Transfer Rates. The <code>di_ppg</code> function is our way of using the PPG Disproportionate Impact Methodology as explained here: <a href="https://www.cccco.edu/-/media/CCCCO-Website/About-Us/Divisions/Digital-Innovation-and-Infrastructure/Research/Files/PercentagePointGapMethod2017.ashx">CCCCO PPG Intro</a></p>
+<p>We will name our results <code>di_data</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Necessary Packages</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)   <span class="co"># Package to visualize data</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact) <span class="co"># Package with functions for calculating DI</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Analyze Transfer Rates by Ethnicity using PPG and assign results to an object named "di_data"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>di_data</code> is a data.frame (like <code>student_equity</code>). I think of data.frames like excel sheets. They are tabular, with column names and rows.</p>
+<p>Our <code>di_data</code> data.frame look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(di_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 14%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">success</th>
+<th style="text-align: right;">pct</th>
+<th style="text-align: right;">reference</th>
+<th style="text-align: left;">reference_group</th>
+<th style="text-align: right;">moe</th>
+<th style="text-align: right;">pct_lo</th>
+<th style="text-align: right;">pct_hi</th>
+<th style="text-align: right;">di_indicator</th>
+<th style="text-align: right;">success_needed_not_di</th>
+<th style="text-align: right;">success_needed_full_parity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Asian</td>
+<td style="text-align: right;">6000</td>
+<td style="text-align: right;">4292</td>
+<td style="text-align: right;">0.7153333</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: left;">overall</td>
+<td style="text-align: right;">0.0300000</td>
+<td style="text-align: right;">0.6853333</td>
+<td style="text-align: right;">0.7453333</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">607</td>
+<td style="text-align: right;">0.3035000</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: left;">overall</td>
+<td style="text-align: right;">0.0300000</td>
+<td style="text-align: right;">0.2735000</td>
+<td style="text-align: right;">0.3335000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">386</td>
+<td style="text-align: right;">446</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hispanic</td>
+<td style="text-align: right;">4000</td>
+<td style="text-align: right;">847</td>
+<td style="text-align: right;">0.2117500</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: left;">overall</td>
+<td style="text-align: right;">0.0300000</td>
+<td style="text-align: right;">0.1817500</td>
+<td style="text-align: right;">0.2417500</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1139</td>
+<td style="text-align: right;">1259</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Multi-Ethnicity</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">504</td>
+<td style="text-align: right;">0.5040000</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: left;">overall</td>
+<td style="text-align: right;">0.0309903</td>
+<td style="text-align: right;">0.4730097</td>
+<td style="text-align: right;">0.5349903</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">0.3900000</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: left;">overall</td>
+<td style="text-align: right;">0.0692965</td>
+<td style="text-align: right;">0.3207035</td>
+<td style="text-align: right;">0.4592965</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">White</td>
+<td style="text-align: right;">6800</td>
+<td style="text-align: right;">4200</td>
+<td style="text-align: right;">0.6176471</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: left;">overall</td>
+<td style="text-align: right;">0.0300000</td>
+<td style="text-align: right;">0.5876471</td>
+<td style="text-align: right;">0.6476471</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>That’s a lot of columns to think about for this tutorial, so I’m going to select only those variables that we’ll use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Necessary Packages</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)   <span class="co"># Package to visualize data</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact) <span class="co"># Package with functions for calculating DI</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Analyze Transfer Rates by Ethnicity using PPG and assign results to an object named "di_data"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Select only the columns we'll use</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(di_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">pct</th>
+<th style="text-align: right;">di_indicator</th>
+<th style="text-align: right;">reference</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Asian</td>
+<td style="text-align: right;">0.7153333</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">6000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">0.3035000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">2000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hispanic</td>
+<td style="text-align: right;">0.2117500</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">4000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Multi-Ethnicity</td>
+<td style="text-align: right;">0.5040000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">0.3900000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">White</td>
+<td style="text-align: right;">0.6176471</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">6800</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Much better.</p>
+<p>The only other thing I want to change about this data is our “di_indicator” variable. Instead of having a “1” for disproportionately impacted and a “0” for not disproportionately impacted, I want to use the labels “DI” and “No DI”, respectively. This will make our visual easier to interpret later on:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Necessary Packages</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)   <span class="co"># Package to visualize data</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact) <span class="co"># Package with functions for calculating DI</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Analyze Transfer Rates by Ethnicity using PPG and assign results to an object named "di_data"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Select only the columns we'll use</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Recode the DI Indicator Column</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And now our data looks like this (see the “di_indicator” column):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(di_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">pct</th>
+<th style="text-align: left;">di_indicator</th>
+<th style="text-align: right;">reference</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Asian</td>
+<td style="text-align: right;">0.7153333</td>
+<td style="text-align: left;">No DI</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">6000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">0.3035000</td>
+<td style="text-align: left;">DI</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">2000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hispanic</td>
+<td style="text-align: right;">0.2117500</td>
+<td style="text-align: left;">DI</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">4000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Multi-Ethnicity</td>
+<td style="text-align: right;">0.5040000</td>
+<td style="text-align: left;">No DI</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Native American</td>
+<td style="text-align: right;">0.3900000</td>
+<td style="text-align: left;">DI</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">White</td>
+<td style="text-align: right;">0.6176471</td>
+<td style="text-align: left;">No DI</td>
+<td style="text-align: right;">0.5264</td>
+<td style="text-align: right;">6800</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="ggplot2-theory" class="level1">
+<h1>ggplot2 theory?</h1>
+<p>There’s a question mark on that heading because I’m not an expert in this stuff, and my mental model for these things was informed by a variety of blog posts, StackOverflow threads, some technical documentation, and experience. If you find something on the internet that contradicts what I say here, perhaps default to that, and let me know so I can update my mental model :)</p>
+<section id="building-layers" class="level2">
+<h2 class="anchored" data-anchor-id="building-layers">Building layers</h2>
+<p>Plots created by <code>ggplot2</code> are composed of “layers”. We start with a blank canvas, then use the data to create an x and y axis layer. Then we add a layer of rectangles for our bar chart, then we add a layer of text to label our bars. <code>ggplot2</code> handles a lot of the positioning work for us, but provides tools to let us customize where/how each element of each layer appears.</p>
+</section>
+<section id="geoms-and-aesthetics" class="level2">
+<h2 class="anchored" data-anchor-id="geoms-and-aesthetics">Geoms and Aesthetics</h2>
+<p>Two fundamental <code>ggplot2</code> ideas are “geoms” and “aesthetics”. <strong>geoms</strong> (geometry objects) are <strong>shapes</strong> on the graph, like squares, circles, lines, and (less intuitively) text. Aesthetics are <strong>attributes</strong> of those shapes: fill, linetype, size, opacity, color, etc…</p>
+<p>We can have multiple <code>geoms</code> in a single graph - think of a <code>line</code> graph with a <code>point</code> at each connection and <code>text</code> displaying each value. We can <code>map</code> our data to various aesthetics (abbreviated <code>aes</code> in <code>ggplot2</code>) of the shapes - think changing the <code>color</code> of a bar in a bar graph depending on whether our data shows DI or not.</p>
+<p>With <code>data</code>, <code>geoms</code>, and <code>aes</code>thetics, we can create a basic graph.</p>
+</section>
+</section>
+<section id="part-1-bare-minimum---get-a-basic-bar-chart" class="level1">
+<h1>Part 1: Bare Minimum - Get A Basic Bar Chart</h1>
+<p>Our first step is to create a canvas. We do that with the <code>ggplot</code> function, providing it with our DI <code>data</code> and instructions for which columns to <code>map</code> to the x-axis and y-axis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Our x and y axes are visible. But now we want to add some shapes. In order to <strong>add</strong> another layer, we actually use the plus sign (<code>+</code>) before our next call.</p>
+<p>Let’s add rectangles to create a bar chart, by adding (<code>+</code>) a <code>geom</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>stat='identity'</code> argument is us telling <code>ggplot2</code> that we’ve already summarized the numbers. The default value is <code>stat='count'</code> which would count our <code>y-axis</code> variable, if we didn’t specify that we’ve already summarized it.</p>
+<p>Now we have a bar graph.</p>
+<section id="add-text" class="level2">
+<h2 class="anchored" data-anchor-id="add-text">Add Text</h2>
+<p>We want to <code>label</code> each bar with the y-axis value using <code>text</code>. To do that, we can add a <code>geom_text</code> and specify that we want to use the outcome variable as our <code>label</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> pct))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="clean-up-text" class="level2">
+<h2 class="anchored" data-anchor-id="clean-up-text">Clean Up Text</h2>
+<p>That many decimal places looks ugly, so let’s clean up that data on the fly. We can do this by rounding the percentage to two places, mutliply it by 100, and paste a percentage sign on the end:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I want the text to be slightly above the bar, instead of overlapping. Currently, <code>ggplot2</code> is using the y-axis value to position our text. We want to <code>nudge</code> it slightly above. There is an argument specifically for this purpose:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you look at the help documentation for <code>geom_bar</code> and <code>geom_text</code>, you’ll see that they require a <code>mapping</code> and a <code>data</code> argument. We don’t specifically provide those arguments, so how does <code>ggplot2</code> know that we want to use our <code>di_data</code> and that the x-axis should be <code>Ethnicity</code> and the y-axis should be <code>outcome</code> (in our case Transfer rate). Well, subsequent layers will inherit those arguments from our original call to <code>ggplot</code>. This is useful because it prevents us from having to specify the same data and mappings for each layer. However, if needed, we can still override those defaults by specifying new <code>data</code> or <code>mapping</code> arguments. In our case, though, using the defaults is what we want.</p>
+</div>
+</div>
+</section>
+<section id="highlighting-di" class="level2">
+<h2 class="anchored" data-anchor-id="highlighting-di">Highlighting DI</h2>
+<p>Next we want to call attention to those populations who have experienced Disproportionate Impact. In our <code>di_data</code> data.frame, there is a column called “di_indicator”, that shows a “DI” for those with DI and a “No DI” for those without.</p>
+<p>We want the <code>aes</code>thetic of our <code>geom_bars</code> to change, based on “di_indicator”. So within our <code>geom_bar</code> call, lets add a call to <code>aes()</code>. We use the <code>fill</code> aesthetic, to fill the shape up with color. The <code>color</code> aesthetic only deals with the color of the lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A legend appeared helps us distinguish what each color means. Cool!</p>
+</section>
+<section id="adding-labels" class="level2">
+<h2 class="anchored" data-anchor-id="adding-labels">Adding Labels</h2>
+<p>We want to add/modify the graphs labels, so that our audience knows that they’re looking at. There are many ways to do this, but I’ve only ever used the <code>labs</code> (short for “labels”) function in <code>ggplot2</code>. I’m not sure if these elements are considered geoms, aesthetics, or something else, but they’re easy to use. You’re just gonna have to memorize the arguments or use <code>?labs</code> to learn more:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="reference-line" class="level2">
+<h2 class="anchored" data-anchor-id="reference-line">Reference Line</h2>
+<p>We want to create a horizontal line (geom) that shows us where the Overall Transfer Rate is. We also want to label this line with text to let our audience know what it meant.</p>
+<p>Knowing where the “Overall Tranfer Rate” lives in our data is half of the battle. It’s located in our <code>di_data</code> data.frame in a variable called <code>reference</code>. In the R console we can see it with the following line of code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>reference</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5264 0.5264 0.5264 0.5264 0.5264 0.5264</code></pre>
+</div>
+</div>
+<p>Notice how it shows up multiple times? That’s because it’s included in each row of the data.frame. If we only want <em>one</em> to show up, we can make a call to the <code>unique</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(di_data<span class="sc">$</span>reference)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5264</code></pre>
+</div>
+</div>
+<p>We can combine this with a <code>geom_hline</code> to our chart like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference)) <span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Awesome! Let’s label that line now, so people know what it means. We want to add text (geom) to the line. And it looks like there is space to position the text above the bar for the “Black” category. I’m also creating a more appropriately formatted label at the same time and nudging it a little below the actual reference line:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference)) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="end-part-1" class="level2">
+<h2 class="anchored" data-anchor-id="end-part-1">End Part 1</h2>
+<p>VOILA!! we have a graph that can stand on it’s own. However, we’ll learn how to make it spookier in the second part.</p>
+</section>
+</section>
+<section id="part-2-extra-credit---make-the-bar-chart-fancy" class="level1">
+<h1>Part 2: Extra Credit - Make the Bar Chart Fancy</h1>
+<p>ENTER AT YOUR OWN RISK</p>
+<p>BEWARE</p>
+<p>THIRD SPOOKY CAUTION</p>
+<p>This is a really great stopping point. Our work so far can be applied to about 80% of our use-cases and should be enough to get you going.</p>
+<p>Every line of code above had huge marginal returns for the quality of our graph. Moving forward, though, we’re going to get even more technical while only making smaller changes to the graph.</p>
+<p>In essence, anything beyond this point makes you an over achiever.</p>
+<section id="custom-colors" class="level2">
+<h2 class="anchored" data-anchor-id="custom-colors">Custom Colors</h2>
+<p>The default colors are pretty ugly and don’t really help us “highlight” the in-need populations. To do that, we want a more muted color for the “No DI” students and a louder color for the “DI” students.</p>
+<p>After googling “Halloween Color Hex Codes”, I found the following “hex codes” (google it) and am going to add them to our script above our graph code.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I’m also going to add comments that break our code up into sections, so things are more visually organized.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference)) <span class="sc">+</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We’ve just declared our colors. We haven’t used them anywhere, so our graph looks unchanged.</p>
+<p>In order to specify that “DI” students should have the color <code>clr_orange</code> and that “No DI” students should have the color <code>clr_dark</code>, we need to use <code>scale_fill_manual</code>.</p>
+<p>Honestly, I don’t know how/why we use a function that starts with <code>scale_</code>, but the <code>fill</code> makes sense, because we’re changing the <code>fill</code> and the <code>manual</code> makes sense cause we’re doing it manually, as opposed to letting <code>gglpot2</code> handle the color choices.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference)) <span class="sc">+</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now let’s change the color of our reference line, reference line text, and bar labels. We’re also going to switch the order of our code to have our <code>geom_hline</code> be “behind” the bar labels:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare our data ####</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference), <span class="at">color =</span> clr_green, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="co"># CHANGED HERE</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">color =</span> clr_purple, <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span> <span class="co"># CHANGED HERE</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">color =</span> clr_green, <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span> <span class="co"># CHANGED HERE</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="changing-the-y-axis-percentages" class="level2">
+<h2 class="anchored" data-anchor-id="changing-the-y-axis-percentages">Changing the Y-Axis Percentages</h2>
+<p>Now we want to change the Y-Axis labels from decimals (default) to formatted percentages. This will make it a little easier on the eyes.</p>
+<p>We’re adding the <code>scale_y_continuous</code> function here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference), <span class="at">color =</span> clr_green, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">color =</span> clr_purple, <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">color =</span> clr_green, <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark)) <span class="sc">+</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="add-theme" class="level2">
+<h2 class="anchored" data-anchor-id="add-theme">Add Theme</h2>
+<p><code>ggplot2</code> comes with many themes that can be applied to give the visual a different look. All of these functions start with <code>theme_</code>. Below we add a call to <code>theme_bw</code> (short for “theme black/white”). Try out some other themes, like <code>theme_minimal</code> or <code>theme_classic</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference), <span class="at">color =</span> clr_green, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">color =</span> clr_purple, <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">color =</span> clr_green, <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark)) <span class="sc">+</span></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Themes focus on aspect of the visual that are not really concerned with data. We can add our own theme elements with a call to the general <code>theme()</code> function.</p>
+<p>Use <code>?theme</code> to see the never ending list of elements you can manually control. It’s overwhelming, but useful when you have a very specific look you’re going for. Let’s change the way the Title Text looks:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference), <span class="at">color =</span> clr_green, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">color =</span> clr_purple, <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">color =</span> clr_green, <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark)) <span class="sc">+</span></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">color =</span> clr_red)</span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now lets change the position of the legend and remove the vertical background lines:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our Libraries ####</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DisImpact)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean our data ####</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> <span class="fu">di_ppg</span>(<span class="at">success =</span> student_equity<span class="sc">$</span>Transfer, <span class="at">group =</span> student_equity<span class="sc">$</span>Ethnicity)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>di_data <span class="ot">&lt;-</span> di_data[<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"pct"</span>, <span class="st">"di_indicator"</span>, <span class="st">"reference"</span>, <span class="st">"n"</span>)]</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>di_data<span class="sc">$</span>di_indicator <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(di_data<span class="sc">$</span>di_indicator <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"DI"</span>, <span class="st">"No DI"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare some constants ####</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Halloween Colors: Google "Halloween Colors Hex Codes"</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>clr_purple <span class="ot">&lt;-</span> <span class="st">"#902EBB"</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>clr_orange <span class="ot">&lt;-</span> <span class="st">"#F4831B"</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>clr_green  <span class="ot">&lt;-</span> <span class="st">"#63C328"</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>clr_red    <span class="ot">&lt;-</span> <span class="st">"#D02823"</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>clr_dark   <span class="ot">&lt;-</span> <span class="st">"#250d03"</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Graph ####</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> di_data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> pct)) <span class="sc">+</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="fu">aes</span>(<span class="at">fill =</span> di_indicator)) <span class="sc">+</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">unique</span>(di_data<span class="sc">$</span>reference), <span class="at">color =</span> clr_green, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">round</span>(pct, <span class="dv">2</span>), <span class="st">"%"</span>)), <span class="at">color =</span> clr_purple, <span class="at">nudge_y =</span> .<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">unique</span>(reference), <span class="at">x =</span> <span class="st">"Black"</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall: "</span>, <span class="fu">round</span>(<span class="fu">unique</span>(reference), <span class="dv">2</span>)<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%"</span>)), <span class="at">color =</span> clr_green, <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">02</span>) <span class="sc">+</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Inequities are scary..."</span>, <span class="co"># Add title</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Visualizing Disproportionate Impact with ggplot2"</span>, <span class="co"># Add subtitle</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>, <span class="co"># This removes the x-axis label</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Transfer Rate"</span>, <span class="co"># This modifies the y-axis label,</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Data Source: DisImpact R Package"</span>,</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="cn">NULL</span> <span class="co"># This removes the legend title, but we could easily rename it.</span></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"DI"</span> <span class="ot">=</span> clr_orange, <span class="st">"No DI"</span> <span class="ot">=</span> clr_dark)) <span class="sc">+</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">color =</span> clr_red),</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">9</span>),</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Most arguments within the <code>theme()</code> function, will take calls from the <code>element_*</code> family of functions, like <code>element_text</code>, <code>element_rect</code>, or <code>element_line</code> depending on what kind of element you want to change. Use <code>ggplot2::element_text</code> to read the docs.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>I’m running out of time. Please let me know if you have any questions via the R Working Group!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -3,11 +3,14 @@
     "listing": "/index.html",
     "items": [
       "/projects/proj1.html",
-      "/projects/proj2.html"
+      "/projects/proj2.html",
+      "/posts/disimpact-ggplot2/index.html"
     ]
   },
   {
     "listing": "/posts.html",
-    "items": []
+    "items": [
+      "/posts/disimpact-ggplot2/index.html"
+    ]
   }
 ]

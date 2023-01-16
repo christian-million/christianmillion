@@ -4,7 +4,7 @@ listing:
     - id: list-projects
       contents: projects
       type: grid
-    - id: posts
+    - id: recent-posts
       contents: posts
       type: grid
       fields: [image, date, title]
